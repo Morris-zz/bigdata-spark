@@ -1,3 +1,4 @@
 # Project exclude paths
 /spark-java/target/
 /spark-scala/target/
+/.idea/
