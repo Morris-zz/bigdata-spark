@@ -1,4 +1,4 @@
-package cn.itcast.spark.point
+package cn.itcast.spark05.point
 
 import org.apache.spark.sql.{Dataset, SparkSession}
 

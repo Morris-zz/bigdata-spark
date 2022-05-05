@@ -1,4 +1,4 @@
-package cn.itcast.spark.sources
+package cn.itcast.spark05.sources
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._

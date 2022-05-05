@@ -1,4 +1,4 @@
-package cn.itcast.spark.start
+package cn.itcast.spark05.start
 
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 

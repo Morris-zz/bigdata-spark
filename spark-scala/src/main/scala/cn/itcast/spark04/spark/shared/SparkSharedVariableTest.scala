@@ -1,4 +1,4 @@
-package cn.itcast.spark.shared
+package cn.itcast.spark05.shared
 
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD

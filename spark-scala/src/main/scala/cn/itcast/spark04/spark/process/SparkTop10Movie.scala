@@ -1,4 +1,4 @@
-package cn.itcast.spark.process
+package cn.itcast.spark05.process
 
 import java.util.Properties
 

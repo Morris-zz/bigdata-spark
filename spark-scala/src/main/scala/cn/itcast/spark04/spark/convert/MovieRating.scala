@@ -1,4 +1,4 @@
-package cn.itcast.spark.convert
+package cn.itcast.spark05.convert
 
 /**
  * 封装电影评分数据

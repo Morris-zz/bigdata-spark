@@ -1,4 +1,4 @@
-package cn.itcast.spark.hive
+package cn.itcast.spark05.hive
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._

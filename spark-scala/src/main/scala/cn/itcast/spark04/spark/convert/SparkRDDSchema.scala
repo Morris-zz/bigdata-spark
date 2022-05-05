@@ -1,4 +1,4 @@
-package cn.itcast.spark.convert
+package cn.itcast.spark05.convert
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
