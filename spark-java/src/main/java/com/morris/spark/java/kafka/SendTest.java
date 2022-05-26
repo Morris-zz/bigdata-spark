@@ -1,5 +1,8 @@
 package com.morris.spark.java.kafka;
 
+import com.alibaba.fastjson.JSONObject;
+import com.morris.spark.java.bean.SearchBean;
+
 import java.io.IOException;
 import java.util.Random;
 
@@ -14,8 +17,13 @@ public class SendTest {
         for (int i = 0; i < 100000; i++) {
             Random random = new Random();
             int nextInt = random.nextInt();
-            kafkaDmpProducer.sendMessage("morris-big-data","test-"+nextInt);
-            System.out.println("test-"+nextInt);
+            SearchBean searchBean = new SearchBean();
+            searchBean.setIp(String.valueOf(random.nextInt()));
+            searchBean.setTopic("");
+            searchBean.setKeyWord("word-"+ random.nextInt());
+            String jsonString = JSONObject.toJSONString(searchBean);
+            kafkaDmpProducer.sendMessage("morris-big-data",jsonString);
+            System.out.println(jsonString);
         }
 
     }

@@ -7,12 +7,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.Optional;
 import org.apache.spark.api.java.function.VoidFunction;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import scala.Option;
 import scala.Tuple2;
 import java.util.*;
 import org.apache.spark.SparkConf;
@@ -36,8 +38,9 @@ public class KafkaStreamApp {
     public static void main(String[] args) throws InterruptedException {
         //jssc
         SparkConf sparkConf = new SparkConf().setAppName("appp").setMaster("local[3]");
-        JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, Durations.minutes(1));
+        JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, Durations.seconds(20));
 
+        jssc.checkpoint("checkPoint/kafka");
         Map<String, Object> kafkaParams = new HashMap<>();
         kafkaParams.put("bootstrap.servers", "10.122.7.5:9092");
         kafkaParams.put("key.deserializer", StringDeserializer.class);
@@ -48,6 +51,7 @@ public class KafkaStreamApp {
 
         Collection<String> topics = Arrays.asList("morris-big-data");
 
+
         JavaInputDStream<ConsumerRecord<String, String>> stream =
                 KafkaUtils.createDirectStream(
                         jssc,
@@ -57,7 +61,7 @@ public class KafkaStreamApp {
 
 
         JavaPairDStream<String, String> mapToPair = stream.mapToPair(record -> new Tuple2<>(record.key(), record.value()));
-        JavaPairDStream<String, ArrayList<SearchBean>> stringArrayListJavaPairDStream = mapToPair.mapPartitionsToPair(partition -> {
+        JavaPairDStream<String, ArrayList<SearchBean>> dStream = mapToPair.mapPartitionsToPair(partition -> {
             ArrayList<Tuple2<String, ArrayList<SearchBean>>> tuple2s = new ArrayList<>();
             Random random = new Random();
 
@@ -68,7 +72,7 @@ public class KafkaStreamApp {
                 String json = item._2;
                 SearchBean searchBean = JSONObject.parseObject(json, SearchBean.class);
                 searchBeans.add(searchBean);
-                tuple2s.add(new Tuple2<String, ArrayList<SearchBean>>(topicName + "@" + random.nextInt(), searchBeans));
+                tuple2s.add(new Tuple2<String, ArrayList<SearchBean>>(searchBean.getIp(), searchBeans));
             }
             return tuple2s.iterator();
 
@@ -76,7 +80,16 @@ public class KafkaStreamApp {
             tmp.addAll(item);
             return tmp;
         });
-        stringArrayListJavaPairDStream.print(10);
+        JavaPairDStream<String, Object> stringObjectJavaPairDStream =
+                dStream.updateStateByKey((value, status) -> {
+                    Object previousState = status.orElse(0);
+                    int size = value.size();
+                    int currentState = (Integer) previousState + size;
+                    return Optional.of(currentState);
+                }
+        );
+
+        stringObjectJavaPairDStream.print(10);
 
 
         jssc.start();
