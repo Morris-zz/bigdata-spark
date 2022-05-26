@@ -45,9 +45,9 @@ object RegionStateReport {
 			方式二：
 				INSERT INTO region_stat_analysis(report_date, province, city, count) VALUES('2020-09-15', '上海', '上海市', 8888) ON DUPLICATE KEY UPDATE count=VALUES(count) ;
 		 */
-		reportDF
-			.coalesce(1)
-    		.foreachPartition(iter => saveToMySQL(iter))
+//		reportDF
+//			.coalesce(1)
+//    		.foreachPartition(iter => saveToMySQL(iter))
 	}
 	
 	/**
