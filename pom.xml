@@ -11,6 +11,7 @@
     <modules>
         <module>spark-scala</module>
         <module>spark-java</module>
+        <module>hbase-java</module>
     </modules>
 
     <repositories>
