@@ -31,10 +31,10 @@ public class CsvToRelationalDatabaseApp {
         df = df.withColumn("name"
                 ,concat(df.col("lname"),lit(","),df.col("fname")));
         df.show(10);
-        String url = "jdbc:mysql://10.122.2.10:3306/tsp_user_server?autoReconnect=true&readOnlyPropagatesToServer=false&characterEncoding=utf8&useSSL=false";
+        String url = "jdbc:mysql://**/tsp_user_server?autoReconnect=true&readOnlyPropagatesToServer=false&characterEncoding=utf8&useSSL=false";
         Properties properties = new Properties();
-        properties.setProperty("username","wms");
-        properties.setProperty("password","plus123Xshein.com");
+        properties.setProperty("username","**");
+        properties.setProperty("password","**");
         properties.setProperty("driver-class-name","com.mysql.jdbc.Driver");
         df.write()
                 .mode(SaveMode.Overwrite)
