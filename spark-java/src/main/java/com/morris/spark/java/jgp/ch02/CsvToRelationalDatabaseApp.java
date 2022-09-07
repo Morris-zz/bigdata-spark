@@ -31,13 +31,14 @@ public class CsvToRelationalDatabaseApp {
         df = df.withColumn("name"
                 ,concat(df.col("lname"),lit(","),df.col("fname")));
         df.show(10);
-        String url = "jdbc:mysql://**/tsp_user_server?autoReconnect=true&readOnlyPropagatesToServer=false&characterEncoding=utf8&useSSL=false";
-        Properties properties = new Properties();
-        properties.setProperty("username","**");
-        properties.setProperty("password","**");
-        properties.setProperty("driver-class-name","com.mysql.jdbc.Driver");
-        df.write()
-                .mode(SaveMode.Overwrite)
-                .jdbc(url,"ch02",properties);
+        df.printSchema();
+//        String url = "jdbc:mysql://**/tsp_user_server?autoReconnect=true&readOnlyPropagatesToServer=false&characterEncoding=utf8&useSSL=false";
+//        Properties properties = new Properties();
+//        properties.setProperty("username","**");
+//        properties.setProperty("password","**");
+//        properties.setProperty("driver-class-name","com.mysql.jdbc.Driver");
+//        df.write()
+//                .mode(SaveMode.Overwrite)
+//                .jdbc(url,"ch02",properties);
     }
 }
