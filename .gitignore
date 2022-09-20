@@ -2,3 +2,4 @@
 /spark-java/target/
 /spark-scala/target/
 /.idea/
+/frauddetection/target/
